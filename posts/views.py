@@ -21,3 +21,9 @@ class PostGetView(generics.RetrieveAPIView):
 class PostListView(generics.ListAPIView):
     serializer_class = PostSerializer
     queryset = Post.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        lang = request.GET['lang']
+        serialized_posts = self.serializer_class(self.get_queryset(), context={'lang': lang}, many=True).data
+
+        return Response(status=status.HTTP_200_OK, data=serialized_posts)
