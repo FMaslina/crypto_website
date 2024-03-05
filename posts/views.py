@@ -30,5 +30,5 @@ class PostListView(generics.ListAPIView):
 
 
 class PostListTestView(generics.ListAPIView):
-    serializer_class = PostSerializerTest
+    serializer_class = PostSerializer
     queryset = Post.objects.all()

@@ -17,9 +17,3 @@ class PostSerializer(serializers.ModelSerializer):
         else:
             data['text'] = instance.text_en
         return data
-
-
-class PostSerializerTest(serializers.ModelSerializer):
-    class Meta:
-        model = Post
-        fields = '__all__'
