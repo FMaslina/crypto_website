@@ -16,4 +16,12 @@ class PostSerializer(serializers.ModelSerializer):
             data['text'] = instance.text_pl
         else:
             data['text'] = instance.text_en
+
+        request = self.context.get('request')
+        if data['image'] is not None:
+            data['image'] = request.build_absolute_uri(instance.image.url)
+
+        if data['video'] is not None:
+            data['video'] = request.build_absolute_uri(instance.video.url)
+
         return data
