@@ -1,9 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
-
 from posts.models import Post
-from posts.serializers import PostSerializer, PostSerializerTest
-from posts.utils import get_translate
+from posts.serializers import PostSerializer
 
 
 class PostGetView(generics.RetrieveAPIView):
