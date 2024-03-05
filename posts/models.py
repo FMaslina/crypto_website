@@ -16,10 +16,10 @@ class Post(models.Model):
         verbose_name = 'Новость'
         verbose_name_plural = 'Новости'
 
-    '''def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
         if self.text:
             self.text_ru = get_translate('autodetect', 'ru', self.text)
             self.text_en = get_translate('autodetect', 'en', self.text)
             self.text_pl = get_translate('autodetect', 'pl', self.text)
 
-        super(Post, self).save(*args, **kwargs)'''
+        super(Post, self).save(*args, **kwargs)
