@@ -5,7 +5,7 @@ from posts.models import Post
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ['id', 'title', 'text', 'pub_date', 'image', 'video']
+        fields = ['title', 'text', 'pub_date', 'image', 'video']
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -17,3 +17,9 @@ class PostSerializer(serializers.ModelSerializer):
         else:
             data['text'] = instance.text_en
         return data
+
+
+class PostSerializerTest(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = '__all__'
