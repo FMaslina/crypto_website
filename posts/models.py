@@ -18,14 +18,8 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         if self.text:
-            ru_text = get_translate('autodetect', 'ru', self.text)
-            en_text = get_translate('autodetect', 'en', self.text)
-            pl_text = get_translate('autodetect', 'pl', self.text)
-
-            equal_languages_error_message = "PLEASE SELECT TWO DISTINCT LANGUAGES"
-
-            self.text_ru = ru_text if ru_text != equal_languages_error_message else self.text
-            self.text_en = en_text if en_text != equal_languages_error_message else self.text
-            self.text_pl = pl_text if pl_text != equal_languages_error_message else self.text
+            self.text_ru = get_translate('autodetect', 'ru', self.text)
+            self.text_en = get_translate('autodetect', 'en', self.text)
+            self.text_pl = get_translate('autodetect', 'pl', self.text)
 
         super(Post, self).save(*args, **kwargs)
