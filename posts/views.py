@@ -11,7 +11,7 @@ class PostGetView(generics.RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         post = self.queryset.get(pk=kwargs['pk'])
         lang = request.GET['lang']
-        serialized_post = self.serializer_class(post, context={'lang': lang}).data
+        serialized_post = self.serializer_class(post, context={'lang': lang, 'request': request}).data
 
         return Response(status=status.HTTP_200_OK, data=serialized_post)
 
