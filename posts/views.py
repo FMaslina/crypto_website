@@ -22,11 +22,7 @@ class PostListView(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         lang = request.GET['lang']
-        serialized_posts = self.serializer_class(self.get_queryset(), context={'lang': lang}, many=True).data
+        serialized_posts = self.serializer_class(self.get_queryset(), context={'lang': lang, 'request': request},
+                                                 many=True).data
 
         return Response(status=status.HTTP_200_OK, data=serialized_posts)
-
-
-class PostListTestView(generics.ListAPIView):
-    serializer_class = PostSerializer
-    queryset = Post.objects.all()
