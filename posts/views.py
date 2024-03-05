@@ -2,7 +2,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 
 from posts.models import Post
-from posts.serializers import PostSerializer, PostSerializerTest
+from posts.serializers import PostSerializer
 from posts.utils import get_translate
 
 
@@ -19,10 +19,11 @@ class PostGetView(generics.RetrieveAPIView):
 
 
 class PostListView(generics.ListAPIView):
-    serializer_class = PostSerializerTest
+    serializer_class = PostSerializer
     queryset = Post.objects.all()
 
     def get(self, request, *args, **kwargs):
-        serialized_posts = self.serializer_class(self.get_queryset(), many=True).data
+        lang = request.GET['lang']
+        serialized_posts = self.serializer_class(self.get_queryset(), context={'lang': lang}, many=True).data
 
         return Response(status=status.HTTP_200_OK, data=serialized_posts)
