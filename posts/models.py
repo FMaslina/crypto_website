@@ -1,5 +1,9 @@
 from django.db import models
-from .utils import get_translate
+from .utils import get_translate, split_into_sentences
+
+
+class Image(models.Model):
+    image = models.FileField(upload_to='images', null=True, blank=True, verbose_name='Изображение')
 
 
 class Post(models.Model):
@@ -9,7 +13,7 @@ class Post(models.Model):
     text_en = models.TextField(null=True, blank=True, verbose_name='Текст (EN)')
     text_pl = models.TextField(null=True, blank=True, verbose_name='Текст (PL)')
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
-    image = models.FileField(upload_to='images', null=True, blank=True, verbose_name='Изображение')
+    images = models.ManyToManyField(Image, through="PostImage")
     video = models.FileField(upload_to='videos', null=True, blank=True, verbose_name='Видео')
 
     class Meta:
@@ -18,8 +22,17 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         if self.text:
-            self.text_ru = get_translate('autodetect', 'ru', self.text)
-            self.text_en = get_translate('autodetect', 'en', self.text)
-            self.text_pl = get_translate('autodetect', 'pl', self.text)
+            sentences = split_into_sentences(self.text)
+            if not self.text_ru:
+                self.text_ru = get_translate('autodetect', 'ru', self.text, sentences)
+            if not self.text_en:
+                self.text_en = get_translate('autodetect', 'en', self.text, sentences)
+            if not self.text_pl:
+                self.text_pl = get_translate('autodetect', 'pl', self.text, sentences)
 
         super(Post, self).save(*args, **kwargs)
+
+
+class PostImage(models.Model):
+    image = models.ForeignKey(Image, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
